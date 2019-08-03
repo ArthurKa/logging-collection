@@ -1,0 +1,19 @@
+{
+  "name": "logging-collection",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArthurKa/logging-collection.git"
+  },
+  "keywords": [],
+  "author": "ArthurKa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArthurKa/logging-collection/issues"
+  },
+  "homepage": "https://github.com/ArthurKa/logging-collection#readme"
+}
