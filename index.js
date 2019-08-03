@@ -4,28 +4,35 @@ const { getHumanTimeFormat } = require('./utils.js');
 
 const oneDay = 24*3600*1000;
 let cleanDate = Date.now();
-let _loggingServiceName;
+
+let _loggingCollectionName;
 let _loggingAutocleanDays;
 let _app;
 
-function loggingCollection(app, loggingServiceName, loggingAutocleanDays) {
-  if(loggingServiceName) {
-    _loggingServiceName = loggingServiceName;
-  }
+async function getCollection() {
+  const client = await _app.get('mongoClient');
+  const db = client.db(client.s.databaseName);
+  return db.collection(_loggingCollectionName);
+}
+
+const cleanLogsOlder__Days = async (days, date = Date.now()) => {
+  const { result } = await (await getCollection()).remove({ time: { $lt: new Date(date - oneDay*days) } });
+  console.info(`${getHumanTimeFormat(date)}: daily logging clean cleaned ${result.n} documents.`);
+}
+
+module.exports = function(app, loggingCollectionName, loggingAutocleanDays) {
   if(app) {
     _app = app;
+  }
+  if(loggingCollectionName) {
+    _loggingCollectionName = loggingCollectionName;
   }
   if(loggingAutocleanDays) {
     _loggingAutocleanDays = loggingAutocleanDays;
   }
 
-  const cleanLogsOlder__Days = async (days, date = Date.now()) => {
-    const res = await _app.service(_loggingServiceName).remove(null, { query: { time: { $lt: new Date(date - oneDay*days) } } });
-    console.info(`${getHumanTimeFormat(date)}: daily logging clean cleaned ${res.length} documents.`);
-  }
-
   /**
-   * Logger that creates a document to `_loggingServiceName` service (logging collection in Mongo).
+   * Logger that creates a document to `_loggingCollectionName` service (logging collection in Mongo).
    * Function is synchronous so it can't await service.create() inside.
    * Function can't be asynchronous, because of stacktrace called inside (there will be no file and functionName this function was called in).
    * Note: first parameter "internalCode" is not overwritable from "restFields" object.
@@ -49,10 +56,12 @@ function loggingCollection(app, loggingServiceName, loggingAutocleanDays) {
       return match && match[1];
     }
 
-    const now = Date.now();
-    if(now - oneDay > cleanDate) {
-      cleanDate = now;
-      cleanLogsOlder__Days(_app.get('loggingAutocleanDays'), now);
+    if(_loggingAutocleanDays) {
+      const now = Date.now();
+      if(now - oneDay > cleanDate) {
+        cleanDate = now;
+        cleanLogsOlder__Days(_loggingAutocleanDays, now);
+      }
     }
 
     const { internalCode: nope, ...rest } = restFields;
@@ -65,8 +74,6 @@ function loggingCollection(app, loggingServiceName, loggingAutocleanDays) {
     const time = new Date();
     const obj = { type, file, internalCode, function: functionName, time, ...rest };
 
-    _app.service(loggingServiceName).create(obj);
+    getCollection().then(collection => collection.insert(obj));
   };
 }
-
-module.exports = loggingCollection;
