@@ -21,13 +21,13 @@ const cleanLogsOlder__Days = async (days, date = Date.now()) => {
 }
 
 module.exports = function(app, loggingCollectionName, loggingAutocleanDays) {
-  if(app) {
+  if(app != null) {
     _app = app;
   }
-  if(loggingCollectionName) {
+  if(loggingCollectionName != null) {
     _loggingCollectionName = loggingCollectionName;
   }
-  if(loggingAutocleanDays) {
+  if(loggingAutocleanDays != null) {
     _loggingAutocleanDays = loggingAutocleanDays;
   }
 
