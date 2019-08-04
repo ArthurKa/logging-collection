@@ -20,7 +20,7 @@ const cleanLogsOlder__Days = async (days, date = Date.now()) => {
   console.info(`${getHumanTimeFormat(date)}: daily logging clean cleaned ${result.n} documents.`);
 }
 
-module.exports = function(app, loggingCollectionName, loggingAutocleanDays) {
+function loggingCollection(app, loggingCollectionName, loggingAutocleanDays) {
   if(app != null) {
     _app = app;
   }
@@ -77,3 +77,5 @@ module.exports = function(app, loggingCollectionName, loggingAutocleanDays) {
     getCollection().then(collection => collection.insert(obj));
   };
 }
+
+module.exports = loggingCollection;
