@@ -11,7 +11,7 @@ let _app;
 
 async function getCollection() {
   const client = await _app.get('mongoClient');
-  const db = client.db(client.s.databaseName);
+  const db = client.db ? client.db(client.s.databaseName) : client;
   return db.collection(_loggingCollectionName);
 }
 
@@ -74,7 +74,7 @@ function loggingCollection(app, loggingCollectionName, loggingAutocleanDays) {
     const time = new Date();
     const obj = { type, file, internalCode, function: functionName, time, ...rest };
 
-    getCollection().then(collection => collection.insert(obj));
+    getCollection().then(collection => collection.insertOne ? collection.insertOne(obj) : collection.insert(obj));
   };
 }
 

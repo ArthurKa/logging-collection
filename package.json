@@ -1,10 +1,9 @@
 {
   "name": "logging-collection",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "",
   "main": "loggingCollection.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ArthurKa/logging-collection.git"
