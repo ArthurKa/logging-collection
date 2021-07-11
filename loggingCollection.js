@@ -1,8 +1,8 @@
 'use strict';
 
-const { getHumanTimeFormat } = require('./utils.js');
+const { getHumanTimeFormat } = require('./utils');
 
-const oneDay = 24*3600*1000;
+const oneDay = 24 * 3600 * 1000;
 let cleanDate = Date.now();
 
 let _loggingCollectionName;
@@ -16,9 +16,9 @@ async function getCollection() {
 }
 
 const cleanLogsOlder__Days = async (days, date = Date.now()) => {
-  const { result } = await (await getCollection()).remove({ time: { $lt: new Date(date - oneDay*days) } });
+  const { result } = await (await getCollection()).remove({ time: { $lt: new Date(date - oneDay * days) } });
   console.info(`${getHumanTimeFormat(date)}: daily logging clean cleaned ${result.n} documents.`);
-}
+};
 
 function loggingCollection(app, loggingCollectionName, loggingAutocleanDays) {
   if(app != null) {
@@ -44,7 +44,7 @@ function loggingCollection(app, loggingCollectionName, loggingAutocleanDays) {
    */
   return function(internalCode, type = 'info', restFields = {}) {
     if(internalCode == null) {
-      throw new Error(`No "internalCode" parameter provided.`);
+      throw new Error('No "internalCode" parameter provided.');
     }
 
     function getFileName() {

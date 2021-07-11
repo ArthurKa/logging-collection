@@ -9,10 +9,16 @@
     "url": "git+https://github.com/ArthurKa/logging-collection.git"
   },
   "keywords": [],
-  "author": "ArthurKa",
+  "author": {
+    "name": "ArthurKa",
+    "email": "arthur.katruk@gmail.com"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ArthurKa/logging-collection/issues"
   },
-  "homepage": "https://github.com/ArthurKa/logging-collection#readme"
+  "homepage": "https://github.com/ArthurKa/logging-collection#readme",
+  "devDependencies": {
+    "@arthurka/eslint": "^1.5.0"
+  }
 }

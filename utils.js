@@ -3,9 +3,10 @@
 function Utils() {
   this.twoDigits = val => `0${val}`.slice(-2);
   this.getHumanTimeFormat = date => {
+    // eslint-disable-next-line no-param-reassign
     date = new Date(date);
     const d = this.twoDigits(date.getDate());
-    const M = this.twoDigits(date.getMonth()+1);
+    const M = this.twoDigits(date.getMonth() + 1);
     const y = this.twoDigits(date.getFullYear());
     const h = this.twoDigits(date.getHours());
     const m = this.twoDigits(date.getMinutes());
